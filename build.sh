@@ -68,5 +68,5 @@ docker run --rm -i "${extra_args[@]}" -e DOCKER=1 -v "$(readlink -f .)":/ws:rw -
     "$image" \
     bash -xc "cd /ws && bash common/build-frameworks.sh" "$@"
 
-out_name="$(ls -1 kf5*-"$DIST"-"$ARCH" | head -n1)"
+out_name="$(ls -1 | grep kf5 | grep "$DIST" | grep "$ARCH" | head -n1)"
 tar cfvz "$out_name".tar.gz "$out_name"
