@@ -10,6 +10,11 @@ log() {
 
 error() { log "$(tput setaf 1)Error: $*"; }
 
+if [[ "$DIST" == "" ]] || [[ "$ARCH" == "" ]]; then
+    error "Usage: env DIST=... ARCH=... [BUILD_DIR=...] bash $0"
+    exit 2
+fi
+
 set -e
 
 env_file=/opt/qt514/bin/qt514-env.sh
