@@ -7,7 +7,12 @@ This project generates builds of KF5 on various distros for various architecture
 
 ## Disclaimer
 
-The builds provided by this script are not provided officially by the KF5 project. They are built automatically by GitHub actions.
+The builds provided by this script are not provided officially by the KDE project. They are built automatically on GitHub actions.
+
+
+## Acknowledgements
+
+This work was partly inspired by https://github.com/chigraph/precompiled-kf5-linux.
 
 
 ## Usage
@@ -17,13 +22,12 @@ The released archives contain an "install tree". The directory layout is as foll
 ```
 kf5-v[version]-[dist]-[arch]/
 ├── bin
-│   ├── cmake
-│   ├── cpack
-│   └── ctest
-├── doc
+│   [...]
+├── lib
 │   [...]
 └── share
     [...]
+[...]
 
 # "graphics" courtesy of tree
 ```
@@ -31,5 +35,5 @@ kf5-v[version]-[dist]-[arch]/
 The easiest way to use these binaries is to extract them into `/usr/local`:
 
 ```sh
-wget .../cmake-v[version]-[dist]-[arch].tar.gz -O- | tar -xz -C /usr/local --strip-components=1
+wget .../kf5-v[version]-[dist]-[arch].tar.gz -O- | tar -xz -C /usr/local --strip-components=1
 ```
