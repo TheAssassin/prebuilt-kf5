@@ -59,6 +59,12 @@ fi
 mkdir -p "$BUILD_DIR"
 pushd "$BUILD_DIR"
 
+run_command() {
+    logfile="$1".log
+    (set -x; "$@") &>"$logfile" || (error "$1 failed" && cat "$logfile" && return 1)
+    return 0
+}
+
 build_framework() {
     framework="$1"
     log "Building $framework"
@@ -67,10 +73,10 @@ build_framework() {
 
     log "Downloading $framework"
     url="https://download.kde.org/stable/frameworks/$kf5_major_minor_version/$dir_name.tar.xz"
-    wget "$url"
+    run_command wget -N "$url" &> wget-"$dir_name".log
 
     log "Extracting $framework"
-    tar xvf "$dir_name".tar.xz
+    run_command tar xvf "$dir_name".tar.xz &> tar-"$dir_name".log
 
     pushd "$dir_name"
 
@@ -78,7 +84,7 @@ build_framework() {
         mkdir -p build
         cd build
 
-        cmake .. \
+        run_command cmake .. \
             -DCMAKE_PREFIX_PATH="$destdir/usr/share/ECM/cmake;$destdir/usr/lib/x86_64-linux-gnu/cmake" \
             -DCMAKE_INSTALL_PREFIX="/usr" \
             -DCMAKE_BUILD_TYPE=Release \
@@ -86,11 +92,7 @@ build_framework() {
 
         log "Building and installing $framework"
         [[ "$CI" != "" ]] && jobs="$(nproc)" || jobs="$(nproc --ignore=1)"
-    #    make -j "$jobs"
-        env DESTDIR="$destdir" ninja -v install -j "$jobs"
-
-    #    log "Installing $framework"
-    #    make install DESTDIR="$destdir"
+        run_command env DESTDIR="$destdir" ninja -v install -j "$jobs"
 
     popd
 }
