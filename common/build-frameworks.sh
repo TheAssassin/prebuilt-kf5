@@ -4,7 +4,8 @@ log() {
     export TERM=xterm-256color
     tput setaf 3
     tput bold
-    echo "=== $* ==="
+    time="$(date +%H:%M:%S)"
+    echo "=== [$time] $* ==="
     tput sgr0
 }
 
