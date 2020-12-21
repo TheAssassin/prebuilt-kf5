@@ -1,0 +1,31 @@
+FROM ubuntu:bionic
+
+ENV ARCH=x86_64 DIST=ubuntu_bionic
+
+SHELL ["/bin/bash", "-x", "-c"]
+
+RUN apt-get update && \
+    apt-get install -y build-essential wget curl patchelf vim-common fuse \
+        zlib1g-dev libjpeg-dev libpng-dev nano git libssl-dev libgl1-mesa-dev \
+        cmake
+
+RUN apt-get install -y software-properties-common && \
+    add-apt-repository -y ppa:beineri/opt-qt-5.14.2-bionic && \
+    apt-get update && \
+    apt-get install -y qt514-meta-full
+
+RUN apt-get install -y python3-distutils ninja-build libqrencode-dev libdmtx-dev libgettext-ocaml-dev gettext gettext-base
+RUN apt-get install -y libxcb-keysyms1-dev libxcb-res0-dev libxrender-dev pkgconf
+RUN apt-get install -y libx11-xcb-dev libxcb\*-dev
+RUN apt-get install -y gperf flex bison libudev-dev catdoc libpoppler-qt5-dev libtaglib-ocaml-dev libexiv2-dev \
+    libavdevice-dev libavcodec-dev libavfilter-dev libavformat-dev libavresample-dev libavutil-dev \
+    libepub-dev libattr1-dev libphonon4qt5-dev
+RUN apt-get install -y libxml2-utils libxml2-dev libxslt1-dev liburi-perl docbook-xml docbook-xsl docbook kdoctools5
+RUN apt-get install -y libgpgmepp-dev libgpgme-dev libgcrypt11-dev libboost-dev
+RUN apt-get install -y liblmdb-dev libgit2-dev
+
+# default user for builds
+RUN adduser --gecos "" build
+
+USER build
+CMD ["bash"]
